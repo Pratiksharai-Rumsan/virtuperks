@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import '../interfaces/IAccessManagerV2.sol';
+import './interfaces/IAccessManagerV2.sol';
 
 contract RewardSystem {
     IAccessManagerV2 public acl;
@@ -67,7 +67,7 @@ contract RewardSystem {
 
     /// @notice This function will provide access for participant to apply for the task
     /// @param taskId The id of the task
-    function registerToTask(string memory taskId) public onlyRole(PARTICIPANT){
+    function participate(string memory taskId) public onlyRole(PARTICIPANT){
         require(tasks[taskId].isActive, "Task is not active");
         require(tasks[taskId].expiryDate > block.timestamp, "Task is expired");
         bool isAllowed = false;
@@ -87,6 +87,7 @@ contract RewardSystem {
             participant: msg.sender,
             status: STATUS.UNACCEPTED
         });
+
     }
 
     /// @notice This function will change the status of the task
