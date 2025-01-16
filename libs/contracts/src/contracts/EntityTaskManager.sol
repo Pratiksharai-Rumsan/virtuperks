@@ -7,14 +7,13 @@ import './interfaces/IEntityTaskManager.sol';
 contract EntityTaskManager is IEntityTaskManager {
   IAccessManagerV2 public acl;
 
-  bytes32 public constant ENTITY_OWNER = keccak256('ENTITY_OWNER');
-  bytes32 public constant TASK_OWNER = keccak256('TASK_OWNER');
+  bytes32 public constant TASK_MANAGER = keccak256('TASK_MANAGER');
   bytes32 public constant PARTICIPANT = keccak256('PARTICIPANT');
 
   mapping(string => Task) public tasks;
   mapping(string => TaskAssignment) public taskAssignments;
 
-  bytes32 private appId;
+  bytes32 public appId;
 
   constructor(address aclAddress, bytes32 _appId) {
     acl = IAccessManagerV2(aclAddress);
@@ -28,7 +27,7 @@ contract EntityTaskManager is IEntityTaskManager {
 
   /// @notice This function creates a new Task
   /// @param task The task object
-  function createTask(Task memory task) public onlyRole(ENTITY_OWNER) {
+  function createTask(Task memory task) public onlyRole(TASK_MANAGER) {
     if (task.owner == address(0)) {
       task.owner = msg.sender;
     }
@@ -63,6 +62,21 @@ contract EntityTaskManager is IEntityTaskManager {
     emit ParticiantApplied(taskId, msg.sender);
   }
 
+  function acceptParticipant(
+    string memory taskId,
+    address participant
+  ) public onlyRole(TASK_MANAGER) {
+    require(tasks[taskId].owner != address(0), 'Task does not exist');
+    require(tasks[taskId].isActive, 'Task is not active');
+    require(
+      taskAssignments[taskId].participant == participant,
+      'Participant is not registered for the task'
+    );
+
+    taskAssignments[taskId].status = STATUS.ACCEPTED;
+    emit TaskAccepted(taskId);
+  }
+
   /// @notice This function will change the status of the task
   /// @param taskId The id of the task
   function completeTask(string memory taskId) public onlyRole(PARTICIPANT) {
@@ -83,14 +97,14 @@ contract EntityTaskManager is IEntityTaskManager {
 
   /// @notice This function will change the status of the task
   /// @param taskId The id of the task
-  function approveTask(string memory taskId) external onlyRole(ENTITY_OWNER) {
+  function approveTask(string memory taskId) external onlyRole(TASK_MANAGER) {
     require(tasks[taskId].owner != address(0), 'Task does not exist');
     require(tasks[taskId].isActive, 'Task is not active');
     require(
-      taskAssignments[taskId].status == STATUS.VERIFIED,
+      taskAssignments[taskId].status == STATUS.COMPLETED,
       'Task is not completed'
     );
-
+    taskAssignments[taskId].status = STATUS.VERIFIED;
     tasks[taskId].isActive = false;
     emit TaskApproved(taskId, msg.sender);
   }
