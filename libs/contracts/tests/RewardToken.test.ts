@@ -12,11 +12,11 @@ describe('------ Reward Token Tests ------', function () {
 
 
   describe("Deployment", function () {
-    let rewardToken
-    let rumsanForwarder
-    let accessManagerV2
-    let deployer
-    let minter
+    let rewardToken: any;
+    let rumsanForwarder: any;
+    let accessManagerV2: any;
+    let deployer: any;
+    let minter: any;
     // let provider: EthereumProvider;
     before(async function () {
       const fixtures = await loadFixture(deployRahatTokenFixture);

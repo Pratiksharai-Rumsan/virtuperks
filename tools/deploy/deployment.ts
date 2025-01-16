@@ -59,8 +59,7 @@ class SeedProject extends commonLib {
   }
 
   public async deployRewardToknen() {
-    const appId =
-      '0x6d79417070496400000000000000000000000000000000000000000000000000';
+    const appId = ethers.id('RewardTokenId');
     const address = '0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9';
     const name = 'RewardToken';
     const symbol = 'RTK';
