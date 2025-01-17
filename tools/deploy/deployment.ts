@@ -28,19 +28,19 @@ class SeedProject extends commonLib {
     return new Promise((resolve) => setTimeout(resolve, ms));
   }
 
-  public async deployAccessManagerContract() {
-    const AccessManager = await this.deployContract('AccessManagerV2', []);
+  // public async deployAccessManagerContract() {
+  //   const AccessManager = await this.deployContract('AccessManagerV2', []);
 
-    this.contracts['RahatToken'] = {
-      address: AccessManager.contract.target as string,
+  //   this.contracts['RahatToken'] = {
+  //     address: AccessManager.contract.target as string,
 
-      startBlock: AccessManager.blockNumber,
-    };
-    console.log(
-      this.contracts.RahatToken.address,
-      'AccessManagercontractAddress'
-    );
-  }
+  //     startBlock: AccessManager.blockNumber,
+  //   };
+  //   console.log(
+  //     this.contracts.RahatToken.address,
+  //     'AccessManagercontractAddress'
+  //   );
+  // }
 
   // public async deployRewardSystemContract() {
   //   const address = '0x5FbDB2315678afecb367f032d93F642f64180aa3';
@@ -58,27 +58,38 @@ class SeedProject extends commonLib {
   //   };
   // }
 
-  // public async deployRewardToknen() {
-  //   const appId = ethers.id('RewardTokenId');
-  //   const address = '0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9';
-  //   const name = 'RewardToken';
-  //   const symbol = 'RTK';
-  //   const decimals = 18;
-  //   const accessManagerAddress = '0x15d34AAf54267DB7D7c367839AAf71A00a2C6A65';
-  //   const RewardToken = await this.deployContract('RewardToken', []);
+  public async deployRewardToken() {
+    // const appId = ethers.id('RewardTokenId');
+    const appId =
+      '0xa1fc19c2993ca75efe2fe53553345fe836c6ba997a4c9a694ac03793180eb23f';
+    const name = 'RewardToken';
+    const symbol = 'RTK';
+    const decimals = 18;
+    //my contract address
+    const accessManager = '0x127359CD56487f76307b186651ddbf684B9c2dFE';
+    const forwarder = '0x127359CD56487f76307b186651ddbf684B9c2dFE';
+    const RewardToken = await this.deployContract('RewardToken', [
+      appId,
+      name,
+      symbol,
+      decimals,
+      accessManager,
+      forwarder,
+    ]);
 
-  //   this.contracts['RahatToken'] = {
-  //     address: RewardToken.contract.target as string,
-  //     startBlock: RewardToken.blockNumber,
-  //   };
-  // }
+    this.contracts['RahatToken'] = {
+      address: RewardToken.contract.target as string,
+      startBlock: RewardToken.blockNumber,
+    };
+    console.log(this.contracts.RahatToken.address, 'RewardTokencontractAddress');
+  }
 }
 
 async function main() {
   const seedProject = new SeedProject();
-  await seedProject.deployAccessManagerContract();
+  // await seedProject.deployAccessManagerContract();
   //await seedProject.deployRewardToknen();
-  //await seedProject.deployRewardSystemContract();
+  await seedProject.deployRewardToken();
   //console.log(seedProject.contracts);
 }
 
