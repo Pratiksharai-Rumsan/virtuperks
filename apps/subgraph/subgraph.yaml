@@ -4,11 +4,11 @@ schema:
 dataSources:
   - kind: ethereum
     name: Token
-    network: sepolia
+    network: mainnet
     source:
-      address: "0xaf1A4352881318A0f45596709bB30150ff55ba7B"
+      address: "0xD2E8d9173584D4DaA5C8354a79eF75ceC2dfa228"
       abi: Token
-      startBlock: 7502905
+      startBlock: 103 
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -33,11 +33,11 @@ dataSources:
       file: ./src/token.ts
   - kind: ethereum
     name: Contract
-    network: sepolia
+    network: mainnet
     source:
-      address: "0xd33c7ABd4DB75391b30793ea02B481bCFAdc6FeC"
+      address: "0xD2E8d9173584D4DaA5C8354a79eF75ceC2dfa228"
       abi: Contract
-      startBlock: 7502905
+      startBlock: 103 
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7

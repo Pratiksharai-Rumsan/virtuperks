@@ -7,7 +7,7 @@ import {
   Entity,
   Bytes,
   Address,
-  BigInt,
+  BigInt
 } from "@graphprotocol/graph-ts";
 
 export class AppCreated extends ethereum.Event {
@@ -122,8 +122,8 @@ export class Token extends ethereum.SmartContract {
       [
         ethereum.Value.fromFixedBytes(appId),
         ethereum.Value.fromFixedBytes(role),
-        ethereum.Value.fromAddress(account),
-      ],
+        ethereum.Value.fromAddress(account)
+      ]
     );
 
     return result[0].toBoolean();
@@ -132,7 +132,7 @@ export class Token extends ethereum.SmartContract {
   try_hasRole(
     appId: Bytes,
     role: Bytes,
-    account: Address,
+    account: Address
   ): ethereum.CallResult<boolean> {
     let result = super.tryCall(
       "hasRole",
@@ -140,8 +140,8 @@ export class Token extends ethereum.SmartContract {
       [
         ethereum.Value.fromFixedBytes(appId),
         ethereum.Value.fromFixedBytes(role),
-        ethereum.Value.fromAddress(account),
-      ],
+        ethereum.Value.fromAddress(account)
+      ]
     );
     if (result.reverted) {
       return new ethereum.CallResult();
@@ -152,7 +152,7 @@ export class Token extends ethereum.SmartContract {
 
   multicall(data: Array<Bytes>): Array<Bytes> {
     let result = super.call("multicall", "multicall(bytes[]):(bytes[])", [
-      ethereum.Value.fromBytesArray(data),
+      ethereum.Value.fromBytesArray(data)
     ]);
 
     return result[0].toBytesArray();
@@ -160,7 +160,7 @@ export class Token extends ethereum.SmartContract {
 
   try_multicall(data: Array<Bytes>): ethereum.CallResult<Array<Bytes>> {
     let result = super.tryCall("multicall", "multicall(bytes[]):(bytes[])", [
-      ethereum.Value.fromBytesArray(data),
+      ethereum.Value.fromBytesArray(data)
     ]);
     if (result.reverted) {
       return new ethereum.CallResult();
