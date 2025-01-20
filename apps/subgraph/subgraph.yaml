@@ -6,9 +6,9 @@ dataSources:
     name: Token
     network: mainnet
     source:
-      address: "0xD2E8d9173584D4DaA5C8354a79eF75ceC2dfa228"
+      address: "0x668eD30aAcC7C7c206aAF1327d733226416233E2"
       abi: Token
-      startBlock: 103 
+      startBlock: 36 
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -35,9 +35,9 @@ dataSources:
     name: Contract
     network: mainnet
     source:
-      address: "0xD2E8d9173584D4DaA5C8354a79eF75ceC2dfa228"
+      address: "0x668eD30aAcC7C7c206aAF1327d733226416233E2"
       abi: Contract
-      startBlock: 103 
+      startBlock: 36 
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
