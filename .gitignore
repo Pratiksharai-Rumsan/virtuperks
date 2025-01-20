@@ -84,4 +84,6 @@ out
 
 build
 
+tools/local-setup/data
+
 .npmrc

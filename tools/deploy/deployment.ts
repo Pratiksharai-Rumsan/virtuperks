@@ -1,10 +1,7 @@
 import { randomBytes } from 'crypto';
-import { uuidV4 } from 'ethers';
+import { uuidV4, ethers } from 'ethers';
 import * as dotenv from 'dotenv';
 import { commonLib } from './_common';
-
-import { ethers } from 'ethers';
-
 dotenv.config();
 
 interface DeployedContract {
@@ -28,69 +25,46 @@ class SeedProject extends commonLib {
     return new Promise((resolve) => setTimeout(resolve, ms));
   }
 
-  // public async deployAccessManagerContract() {
-  //   const AccessManager = await this.deployContract('AccessManagerV2', []);
+  public async deployAccessManagerContract() {
 
-  //   this.contracts['RahatToken'] = {
-  //     address: AccessManager.contract.target as string,
+    const AccessManager = await this.deployContract('AccessManagerV2', [])
 
-  //     startBlock: AccessManager.blockNumber,
-  //   };
-  //   console.log(
-  //     this.contracts.RahatToken.address,
-  //     'AccessManagercontractAddress'
-  //   );
-  // }
+    this.contracts['AccessManagerV2'] = {
+        address: AccessManager.contract.target as string,
+        startBlock: AccessManager.blockNumber,
+      };
 
-  // public async deployRewardSystemContract() {
-  //   const address = '0x5FbDB2315678afecb367f032d93F642f64180aa3';
-  //   const appId = ethers.encodeBytes32String('myAppId');
-
-  //   console.log(appId, 'appId');
-  //   const RewardSystem = await this.deployContract('RewardSystem', [
-  //     address,
-  //     appId,
-  //   ]);
-
-  //   this.contracts['RahatToken'] = {
-  //     address: RewardSystem.contract.target as string,
-  //     startBlock: RewardSystem.blockNumber,
-  //   };
-  // }
-
-  public async deployRewardToken() {
-    // const appId = ethers.id('RewardTokenId');
-    const appId =
-      '0xa1fc19c2993ca75efe2fe53553345fe836c6ba997a4c9a694ac03793180eb23f';
-    const name = 'RewardToken';
-    const symbol = 'RTK';
-    const decimals = 18;
-    //my contract address
-    const accessManager = '0x127359CD56487f76307b186651ddbf684B9c2dFE';
-    const forwarder = '0x127359CD56487f76307b186651ddbf684B9c2dFE';
-    const RewardToken = await this.deployContract('RewardToken', [
-      appId,
-      name,
-      symbol,
-      decimals,
-      accessManager,
-      forwarder,
-    ]);
-
-    this.contracts['RahatToken'] = {
-      address: RewardToken.contract.target as string,
-      startBlock: RewardToken.blockNumber,
-    };
-    console.log(this.contracts.RahatToken.address, 'RewardTokencontractAddress');
+      this.writeToDeploymentFile(
+        'contracts',
+        this.contracts,
+      );
   }
+
+
+  public async deployTaskManagerContract() {
+
+    const appId = ethers.keccak256(Buffer.from('app1'))
+
+    const AccessManager = await this.deployContract('RewardSystem', [this.contracts['AccessManagerV2'].address, appId])
+
+    this.contracts['RewardSystem'] = {
+        address: AccessManager.contract.target as string,
+        startBlock: AccessManager.blockNumber,
+      };
+
+      this.writeToDeploymentFile(
+        'contracts',
+        this.contracts,
+      );
+  }
+  
 }
 
 async function main() {
   const seedProject = new SeedProject();
-  // await seedProject.deployAccessManagerContract();
-  //await seedProject.deployRewardToknen();
-  await seedProject.deployRewardToken();
-  //console.log(seedProject.contracts);
+  await seedProject.deployAccessManagerContract();
+  await seedProject.deployTaskManagerContract();
+
 }
 
 main().catch((error) => {

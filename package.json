@@ -16,7 +16,8 @@
     "contracts:deployTest": "cd ./libs/contracts && hardhat run scripts/deploy.ts --network sepolia",
     "contracts:node": "cd ./libs/contracts && npx hardhat node",
     "build": "nx build",
-    "deployContract": "ts-node tools/deploy/deployment.ts"
+    "deployContract": "ts-node tools/deploy/deployment.ts",
+    "bootstrap": "cd tools/local-setup && bash bootstrap.sh"
   },
   "private": true,
   "dependencies": {
