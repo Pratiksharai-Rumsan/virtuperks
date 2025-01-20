@@ -1,7 +1,7 @@
 {
   "AccessManagerV2": {
     "address": "0x668eD30aAcC7C7c206aAF1327d733226416233E2",
-    "startBlock": 36
+    "startBlock": 37
   },
   "RewardSystem": {
     "address": "0x50D75C1BC6a1cE35002C9f92D0AF4B3684aa6B74",
