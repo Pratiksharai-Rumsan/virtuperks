@@ -130,10 +130,10 @@ export const useGetTaskParticipantsWithStatus = (taskId: any) => {
   };
 }
 
-export const useGetApprovedAndCompletedList = (taskId: any) => {
+export const useGetApprovedAndCompletedList = (taskId:string): { approvedData: any[], completedData: any[], approvedAndCompletedLoading: boolean, refetch: () => void } => {
   const { queryService } = useGraphService();
-  const { data, isLoading } = useQuery({
-    queryKey: ["approvedAndCompleted"],
+  const { data, isLoading, refetch } = useQuery({
+    queryKey: ["approvedAndCompleted", taskId],
     queryFn: async () => {
       const getAllData = await queryService?.getTaskApprovedAndCompletedList(taskId);
       return getAllData;
@@ -145,7 +145,8 @@ export const useGetApprovedAndCompletedList = (taskId: any) => {
   return {
     approvedData: filterData.taskApproveds || [],
     completedData: filterData.taskCompleteds || [],
-    approvedAndCompletedLoading: isLoading
+    approvedAndCompletedLoading: isLoading,
+    refetch
   };
 }
 
@@ -172,6 +173,7 @@ export const useApproveTaskMutation = () => {
 export const useAcceptParticipantMutation = () => {
   const queryClient = useQueryClient();
   const { writeContractAsync } = useWriteEntityTaskManagerAcceptParticipant();
+  //const {refetch} = useGetApprovedAndCompletedList(taskId);
 
   return useMutation({
     mutationFn: async ({ 
@@ -189,9 +191,12 @@ export const useAcceptParticipantMutation = () => {
       });
       return result;
     },
-    onSuccess: () => {
+    onSuccess: (result, variables) => {
+    console.log("result11111", result) 
+   
+
       // Invalidate both participant and task status queries
-      queryClient.invalidateQueries({ queryKey: ["approvedAndCompleted"] });
-    },
+      queryClient.invalidateQueries({queryKey:["approvedAndCompleted", variables.taskId]});
+    }
   });
 };

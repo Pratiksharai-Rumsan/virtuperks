@@ -35,14 +35,14 @@ import { useEntityList } from "@/hooks/subgraph/querycall";
 import { useWriteContract } from "wagmi";
 import { taskSchema } from "./schema";
 
-import { participantList, tokenList } from "@/sampleData";
+import { participantList } from "@/sampleData";
 import { isAddress } from "viem";
 import { EntityTaskManagementABI } from "@workspace/contracts/abis";
 
 const defaultValues: any = {
   detailsUrl: "",
   owner: "",
-  rewardToken: "",
+  rewardToken: process.env.NEXT_PUBLIC_RAHAT_TOKEN || "", // Set default reward token
   expiryDate: "",
   allowedWallets: "",
   maxParticipants: 0,
@@ -110,7 +110,9 @@ export default function TaskAdd({ router }: TaskAddProps) {
     form.setValue("allowedWallets", filtered);
   };
 
+
   const handleSubmit = async (data: any) => {
+
     if (!isAddress(data.entityAddress)) {
       console.error("Invalid Ethereum address:", data.entityAddress);
       return;
@@ -239,41 +241,6 @@ export default function TaskAdd({ router }: TaskAddProps) {
 
                         <FormField
                           control={form.control}
-                          name="rewardToken"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>Select Token</FormLabel>
-                              <FormControl>
-                                <Select
-                                  onValueChange={(value) =>
-                                    field.onChange(value)
-                                  }
-                                  value={field.value}
-                                >
-                                  <SelectTrigger>
-                                    <SelectValue placeholder="Select reward" />
-                                  </SelectTrigger>
-                                  <SelectContent>
-                                    {tokenList?.map(
-                                      (token: RewardTokenType) => (
-                                        <SelectItem
-                                          key={token.name}
-                                          value={token.address}
-                                        >
-                                          {token.name}
-                                        </SelectItem>
-                                      ),
-                                    )}
-                                  </SelectContent>
-                                </Select>
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-
-                        <FormField
-                          control={form.control}
                           name="maxParticipants"
                           render={({ field }) => (
                             <FormItem>
@@ -337,6 +304,33 @@ export default function TaskAdd({ router }: TaskAddProps) {
                             </FormItem>
                           )}
                         />
+
+                         <FormField
+                        control={form.control}
+                        name="rewardToken"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Token</FormLabel>
+                            <FormControl>
+                              <Select
+                                onValueChange={(value) => field.onChange(value)}
+                                value={process.env.NEXT_PUBLIC_RAHAT_TOKEN || ""}
+                                disabled // Make it read-only
+                              >
+                                <SelectTrigger>
+                                  <SelectValue>Rahat Token</SelectValue>
+                                </SelectTrigger>
+                                <SelectContent>
+                                  <SelectItem value={process.env.NEXT_PUBLIC_RAHAT_TOKEN || ""}>
+                                    Rahat Token
+                                  </SelectItem>
+                                </SelectContent>
+                              </Select>
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
 
                         <FormField
                           control={form.control}
@@ -518,6 +512,8 @@ export default function TaskAdd({ router }: TaskAddProps) {
                           </FormItem>
                         )}
                       />
+
+                     
 
                       <div className="w-full flex justify-end gap-4">
                         <Button
