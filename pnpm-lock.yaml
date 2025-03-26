@@ -182,6 +182,18 @@ importers:
       '@hookform/resolvers':
         specifier: ^3.10.0
         version: 3.10.0(react-hook-form@7.54.2(react@19.0.0))
+      '@paralleldrive/cuid2':
+        specifier: ^2.2.2
+        version: 2.2.2
+      '@rumsan/raman':
+        specifier: 0.0.143
+        version: 0.0.143
+      '@rumsan/react-query':
+        specifier: ^0.0.70
+        version: 0.0.70
+      '@rumsan/sdk':
+        specifier: ^0.1.152
+        version: 0.1.158
       '@tanstack/react-query':
         specifier: ^5.65.1
         version: 5.67.3(react@19.0.0)
@@ -2224,8 +2236,12 @@ packages:
   '@openzeppelin/contracts@5.2.0':
     resolution: {integrity: sha512-bxjNie5z89W1Ea0NZLZluFh8PrFNn9DH8DQlujEok2yjsOlraUPKID5p1Wk3qdNbf6XkQ1Os2RvfiHrrXLHWKA==}
 
+  '@paralleldrive/cuid2@2.2.2':
+    resolution: {integrity: sha512-ZOBkgDwEdoYVlSeRbYYXs0S9MejQofiVYoTbKzy/6GQa39/q5tQU2IX46+shYnUkpEl3wc+J6wRlar7r2EK2xA==}
+
   '@paulmillr/qr@0.2.1':
     resolution: {integrity: sha512-IHnV6A+zxU7XwmKFinmYjUcwlyK9+xkG3/s9KcQhI9BjQKycrJ1JRO+FbNYPwZiPKW3je/DR0k7w8/gLa5eaxQ==}
+    deprecated: 'The package is now available as "qr": npm install qr'
 
   '@pinax/graph-networks-registry@0.6.7':
     resolution: {integrity: sha512-xogeCEZ50XRMxpBwE3TZjJ8RCO8Guv39gDRrrKtlpDEDEMLm0MzD3A0SQObgj7aF7qTZNRTWzsuvQdxgzw25wQ==}
@@ -2626,16 +2642,25 @@ packages:
     resolution: {integrity: sha512-zGzFsgtZ44mgL4Xef2gOy1hrRVdrs9mcxCOOKZrIPsmbZW14yTkaF591GXxpQvjXiHtgZ/iA9qLyWH6oSReIxQ==}
 
   '@rumsan/extensions@0.1.103':
-    resolution: {integrity: sha512-wuMHaxyFEc1FgoG11GvMypjH46ZKvLVc8Cuiq/2vWdjsLcj826SbN7yHShfbWl5a/KCVr99HqBGTn/yQo9blpQ==}
+    resolution: {integrity: sha512-dTC+FXa8e6ZKBfbKO6JgHuVtJRozOdrekmSHLi0V44HwkGZxxebQNtbfbSu4wY4Max3Hdf8dMyUDD3bAP71UAQ==, tarball: https://npm.pkg.github.com/download/@rumsan/extensions/0.1.103/e54b2ac18d54e2309282add6b4fd0a56857fa96f}
 
   '@rumsan/prisma@1.0.131':
-    resolution: {integrity: sha512-X5BCLpHDPT9I2cFv5ktAF91K5Gu5NQQYfBSIndRFE4t/vajTynwbkwdDpmlHJD6uJb5LLZvH1PR2rwYjS9a2yQ==}
+    resolution: {integrity: sha512-/sAC3GRj9PctLvLDVOV/J9UH5CIhxe7XocvtRmJXHGZ3LG+UwOdHYK+1LGIWAUvipFQ4lmXeWITjOWM4rsLJkg==, tarball: https://npm.pkg.github.com/download/@rumsan/prisma/1.0.131/a611bf9e3a955a90a5e0c0ee3e466dfe74a65cf6}
 
-  '@rumsan/sdk@0.0.45':
-    resolution: {integrity: sha512-9pwvrPPAU0t+UA6rPw6ABe/jBjB+0OBHHmcQ3aMo4tmCEDgBPRnPf+Q/G+ukY7G3WxNKfqAdx/29bp30vWaZaA==}
+  '@rumsan/raman@0.0.143':
+    resolution: {integrity: sha512-hpnWb0lKb+2uHKp89jYt49w2v5xy0W9KvbpHZnLJRVXowxbHZ/2HiT3V5D2LIIBo2lXtfbUmeyk8vR7crwp0hg==, tarball: https://npm.pkg.github.com/download/@rumsan/raman/0.0.143/4ee08f4271208af9a00c902877c386c9ead1521d}
 
-  '@rumsan/sdk@0.1.102':
-    resolution: {integrity: sha512-ohVRPpPZPKVU8/IXp3lsvR9Obmp1jiYnpV0cMRlDiczjevkvPi03Gx8/VLbIZ+h+jRsk/2XpMFZJxAM9L8ABvg==}
+  '@rumsan/react-query@0.0.70':
+    resolution: {integrity: sha512-bZYFJ0fwNb7Cd/CQxEXATOf86XU1ilP8AdzX1OqLWT2rMJBN+ygHTrnbt83mhumxs4xThfvabIDA7n3PLO3E6Q==, tarball: https://npm.pkg.github.com/download/@rumsan/react-query/0.0.70/baec5e094b88519ac58600c53c7fa890688ae03d}
+
+  '@rumsan/sdk@0.1.106':
+    resolution: {integrity: sha512-OAa+T7WIh7w41PvLmPq72H71CBWTWYyJTXiJ0qZvsn5xTNfcZ0bzT7aJe3j+2LTGd5R1vt249R+pz9G7MMSrEQ==, tarball: https://npm.pkg.github.com/download/@rumsan/sdk/0.1.106/107a44093c51b62e0e4ae721a770290e9239ad19}
+
+  '@rumsan/sdk@0.1.152':
+    resolution: {integrity: sha512-nyojB4JiMM9MT3NhKX1ZS9574AmiXgGSKTldjrshDOllgk8DRUkiA+y/Lkwf1QrbN5Bq+kNFd7C2gvrvNicgUw==, tarball: https://npm.pkg.github.com/download/@rumsan/sdk/0.1.152/5030b0d1589a07e951678af164a844a9e718569b}
+
+  '@rumsan/sdk@0.1.158':
+    resolution: {integrity: sha512-Kc2ItkxRHcPcb8xLztj0IrqGIalD5X+ig1Jy0FLY9INIDV9I3LGhTwLy8rjFlbAMhNVpu6Kt5zK8Y7xxn9//7w==, tarball: https://npm.pkg.github.com/download/@rumsan/sdk/0.1.158/8c1dc897f457b85b43de7697cd7faa67cb36f418}
 
   '@safe-global/safe-apps-provider@0.18.5':
     resolution: {integrity: sha512-9v9wjBi3TwLsEJ3C2ujYoexp3pFJ0omDLH/GX91e2QB+uwCKTBYyhxFSrTQ9qzoyQd+bfsk4gjOGW87QcJhf7g==}
@@ -8278,9 +8303,6 @@ packages:
   tslib@1.14.1:
     resolution: {integrity: sha512-Xni35NKzjgMrwevysHTCArtLDpPvye8zV/0E4EyYn43P7/7qvQwPh9BGkHewbMulVntbigmcT7rdX3BNo9wRJg==}
 
-  tslib@2.6.2:
-    resolution: {integrity: sha512-AEYxH93jGFPn/a2iVAwW87VuUIkR1FVUKB77NwMF7nBTDkDrrT/Hpt/IrCJ0QXhW27jTBDcf5ZY7w6RiqTMw2Q==}
-
   tslib@2.7.0:
     resolution: {integrity: sha512-gLXCKdN1/j47AiHiOkJN69hJmcbGTHI0ImLmbYLHykhgeN0jVGola9yVjFgzCUklsZQMW55o+dW7IXv3RCXDzA==}
 
@@ -11270,6 +11292,10 @@ snapshots:
 
   '@openzeppelin/contracts@5.2.0': {}
 
+  '@paralleldrive/cuid2@2.2.2':
+    dependencies:
+      '@noble/hashes': 1.7.1
+
   '@paulmillr/qr@0.2.1': {}
 
   '@pinax/graph-networks-registry@0.6.7': {}
@@ -11655,27 +11681,33 @@ snapshots:
   '@rumsan/extensions@0.1.103':
     dependencies:
       '@rumsan/prisma': 1.0.131
-      '@rumsan/sdk': 0.1.102
+      '@rumsan/sdk': 0.1.106
       class-transformer: 0.5.1
       class-validator: 0.14.1
-    transitivePeerDependencies:
-      - debug
 
   '@rumsan/prisma@1.0.131':
     dependencies:
-      '@rumsan/sdk': 0.0.45
-    transitivePeerDependencies:
-      - debug
+      '@rumsan/sdk': 0.1.106
 
-  '@rumsan/sdk@0.0.45':
+  '@rumsan/raman@0.0.143':
     dependencies:
+      '@rumsan/sdk': 0.1.158
       axios: 1.8.3
-      http-status-codes: 2.3.0
-      tslib: 2.6.2
+      tslib: 2.8.1
     transitivePeerDependencies:
       - debug
 
-  '@rumsan/sdk@0.1.102': {}
+  '@rumsan/react-query@0.0.70':
+    dependencies:
+      '@rumsan/sdk': 0.1.152
+
+  '@rumsan/sdk@0.1.106': {}
+
+  '@rumsan/sdk@0.1.152': {}
+
+  '@rumsan/sdk@0.1.158':
+    dependencies:
+      http-status-codes: 2.3.0
 
   '@safe-global/safe-apps-provider@0.18.5(bufferutil@4.0.9)(typescript@5.8.2)(utf-8-validate@5.0.10)(zod@3.24.2)':
     dependencies:
@@ -17573,7 +17605,7 @@ snapshots:
     dependencies:
       react: 19.0.0
       react-style-singleton: 2.2.3(@types/react@18.3.0)(react@19.0.0)
-      tslib: 2.7.0
+      tslib: 2.8.1
     optionalDependencies:
       '@types/react': 18.3.0
 
@@ -17600,7 +17632,7 @@ snapshots:
     dependencies:
       get-nonce: 1.0.1
       react: 19.0.0
-      tslib: 2.7.0
+      tslib: 2.8.1
     optionalDependencies:
       '@types/react': 18.3.0
 
@@ -18799,8 +18831,6 @@ snapshots:
 
   tslib@1.14.1: {}
 
-  tslib@2.6.2: {}
-
   tslib@2.7.0: {}
 
   tslib@2.8.1: {}
@@ -19045,7 +19075,7 @@ snapshots:
   use-callback-ref@1.3.3(@types/react@18.3.0)(react@19.0.0):
     dependencies:
       react: 19.0.0
-      tslib: 2.7.0
+      tslib: 2.8.1
     optionalDependencies:
       '@types/react': 18.3.0
 
@@ -19053,7 +19083,7 @@ snapshots:
     dependencies:
       detect-node-es: 1.1.0
       react: 19.0.0
-      tslib: 2.7.0
+      tslib: 2.8.1
     optionalDependencies:
       '@types/react': 18.3.0
 
