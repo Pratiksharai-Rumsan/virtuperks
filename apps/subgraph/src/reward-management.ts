@@ -32,6 +32,7 @@ import {
   TaskClosed,
   TaskCompleted,
   TaskCreated,
+  TaskDetail,
   TaskDetailsUpdated,
   TaskIdMapping,
   TaskVerified,
@@ -84,26 +85,27 @@ export function handleContractUnpaused(event: ContractUnpausedEvent): void {
   entity.save()
 }
 
-export function handleDisbursementToTask(event: DisbursementToTaskEvent): void {
-  let entity = new DisbursementToTask(
-    event.transaction.hash.concatI32(event.logIndex.toI32()),
-  )
-  entity.taskId = event.params.taskId
-  entity.amount = event.params.amount
-  entity.disbursedBy = event.params.disbursedBy
+// export function handleDisbursementToTask(event: DisbursementToTaskEvent): void {
+//   let entity = new DisbursementToTask(
+//     event.transaction.hash.concatI32(event.logIndex.toI32()),
+//   )
+//   entity.taskId = event.params.taskId
+//   entity.amount = event.params.amount
+//   entity.disbursedBy = event.params.disbursedBy
 
-  entity.blockNumber = event.block.number
-  entity.blockTimestamp = event.block.timestamp
-  entity.transactionHash = event.transaction.hash
-    // Link to RewardManagement
-  let rewardManagement = RewardManagementCreated.load(event.address);
-  if (rewardManagement != null) {
-    entity.rewardManagement = rewardManagement.id;
+//   entity.blockNumber = event.block.number
+//   entity.blockTimestamp = event.block.timestamp
+//   entity.transactionHash = event.transaction.hash
+//     // Link to RewardManagement
+//   let rewardManagement = RewardManagementCreated.load(event.address);
+//   if (rewardManagement != null) {
+//     entity.rewardManagement = rewardManagement.id;
     
-  }
+//   }
 
-  entity.save()
-}
+//   entity.save()
+// }
+
 
 export function handleEtherWithdrawn(event: EtherWithdrawnEvent): void {
   let entity = new EtherWithdrawn(
@@ -118,6 +120,62 @@ export function handleEtherWithdrawn(event: EtherWithdrawnEvent): void {
   entity.transactionHash = event.transaction.hash
 
   entity.save()
+}
+
+export function handleDisbursementToTask(event: DisbursementToTaskEvent): void {
+  // Create DisbursementToTask entity
+  let entity = new DisbursementToTask(
+    event.transaction.hash.concatI32(event.logIndex.toI32())
+  );
+  entity.taskId = event.params.taskId;
+  entity.amount = event.params.amount;
+  entity.disbursedBy = event.params.disbursedBy;
+  entity.blockNumber = event.block.number;
+  entity.blockTimestamp = event.block.timestamp;
+  entity.transactionHash = event.transaction.hash;
+
+  // Link to RewardManagement
+  let rewardManagement = RewardManagementCreated.load(event.address);
+  if (rewardManagement != null) {
+    entity.rewardManagement = rewardManagement.id;
+  } else {
+    log.error("RewardManagementCreated not found for address: {}", [
+      event.address.toHexString(),
+    ]);
+  }
+
+  // Find the TaskIdMapping to get the associated TaskCreated
+  let mapping = TaskIdMapping.load(event.params.taskId);
+  if (mapping) {
+    // Load the TaskCreated entity
+    let taskCreated = TaskCreated.load(mapping.taskCreated);
+    if (taskCreated && taskCreated.taskDetail !== null) {
+      // Load the TaskDetail entity
+      let taskDetail = TaskDetail.load(taskCreated.taskDetail!);
+      if (taskDetail) {
+        // Update isTokenDisbursed to true
+        taskDetail.isTokenDisbursed = true;
+        taskDetail.save();
+        log.info("TaskDetail updated: isTokenDisbursed set to true for taskId: {}", [
+          event.params.taskId.toHexString(),
+        ]);
+      } else {
+        log.error("TaskDetail not found for taskId: {}", [
+          event.params.taskId.toHexString(),
+        ]);
+      }
+    } else {
+      log.error("TaskCreated or taskDetail not found for taskId: {}", [
+        event.params.taskId.toHexString(),
+      ]);
+    }
+  } else {
+    log.error("TaskIdMapping not found for taskId: {}", [
+      event.params.taskId.toHexString(),
+    ]);
+  }
+
+  entity.save();
 }
 
 export function handleParticipantApplied(event: ParticipantAppliedEvent): void {
@@ -224,18 +282,70 @@ export function handleTaskApproved(event: TaskApprovedEvent): void {
   entity.save()
 }
 
+// export function handleTaskClosed(event: TaskClosedEvent): void {
+//   let entity = new TaskClosed(
+//     event.transaction.hash.concatI32(event.logIndex.toI32()),
+//   )
+//   entity.internal_id = event.params.id
+//   entity.closedBy = event.params.closedBy
+
+//   entity.blockNumber = event.block.number
+//   entity.blockTimestamp = event.block.timestamp
+//   entity.transactionHash = event.transaction.hash
+
+//   entity.save()
+// }
+
+
 export function handleTaskClosed(event: TaskClosedEvent): void {
+  // Create TaskClosed entity
   let entity = new TaskClosed(
-    event.transaction.hash.concatI32(event.logIndex.toI32()),
-  )
-  entity.internal_id = event.params.id
-  entity.closedBy = event.params.closedBy
+    event.transaction.hash.concatI32(event.logIndex.toI32())
+  );
+  entity.internal_id = event.params.id;
+  entity.closedBy = event.params.closedBy;
+  entity.blockNumber = event.block.number;
+  entity.blockTimestamp = event.block.timestamp;
+  entity.transactionHash = event.transaction.hash;
+  entity.save();
 
-  entity.blockNumber = event.block.number
-  entity.blockTimestamp = event.block.timestamp
-  entity.transactionHash = event.transaction.hash
-
-  entity.save()
+  // Find the TaskIdMapping to get the associated TaskCreated
+  let mapping = TaskIdMapping.load(event.params.id);
+  if (mapping) {
+    // Load the TaskCreated entity
+    let taskCreated = TaskCreated.load(mapping.taskCreated);
+    if (taskCreated) {
+      // Check if taskDetail is not null
+      if (taskCreated.taskDetail !== null) {
+        // Load the TaskDetail entity
+        let taskDetail = TaskDetail.load(taskCreated.taskDetail!); // Non-null assertion since we checked
+        if (taskDetail) {
+          // Update isOpen to false
+          taskDetail.isOpen = false;
+          taskDetail.save();
+          log.info("TaskDetail updated: isOpen set to false for taskId: {}", [
+            event.params.id.toHexString(),
+          ]);
+        } else {
+          log.error("TaskDetail not found for taskId: {}", [
+            event.params.id.toHexString(),
+          ]);
+        }
+      } else {
+        log.error("taskCreated.taskDetail is null for taskId: {}", [
+          event.params.id.toHexString(),
+        ]);
+      }
+    } else {
+      log.error("TaskCreated not found for taskId: {}", [
+        event.params.id.toHexString(),
+      ]);
+    }
+  } else {
+    log.error("TaskIdMapping not found for taskId: {}", [
+      event.params.id.toHexString(),
+    ]);
+  }
 }
 
 export function handleTaskCompleted(event: TaskCompletedEvent): void {
