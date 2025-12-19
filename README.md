@@ -8,6 +8,8 @@ This template is for creating a monorepo with shadcn/ui, nextjs app and nestjs a
 pnpm run dev
 ```
 
+## for testing
+
 ## Contracts build & artifacts
 
 This repo compiles Solidity contracts under `packages/contracts` and produces JSON artifacts. To make those artifacts available to tooling under `tools/`, we provide a small sync script that copies selected `.json` files into `tools/artifacts`.
